@@ -1,5 +1,8 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/sol2wpx5h8sg4jka/branch/master?svg=true)](https://ci.appveyor.com/project/Berengalina/moneytransfer/branch/master)
 
+## Домашнее задание к занятию «Behaviour Driven Development»
+
+### Задача №1 - Page Object's
 
 Для решения задачи были реализованы автотесты на перевод денежных средств между картами и проверку балансов карт.
 
@@ -9,7 +12,7 @@
 Сумму пополнения я также создала в классе DataHelper и присвоила ей конкретное значение, в тестах методы пополнения вызываются без указания параметра (суммы пополнения).
 
  
-Сборка в CI подсвечивается зеленым, но в ходе обработки есть ошибка:
+**Сборка в CI подсвечивается зеленым**, но в ходе обработки есть ошибка:
 2020-11-25 17:39:37.500 [DefaultDispatcher-worker-5] ERROR Application - 500 Internal Server Error: POST - /api/transfer
 java.util.NoSuchElementException: Collection contains no element matching the predicate
 
