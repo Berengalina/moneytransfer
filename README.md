@@ -1,11 +1,21 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/sol2wpx5h8sg4jka/branch/master?svg=true)](https://ci.appveyor.com/project/Berengalina/moneytransfer/branch/master)
 
+
+Для решения задачи были реализованы автотесты на перевод денежных средств между картами и проверку балансов карт.
+
+Один упавший тест я закомментировала, чтобы не обрушать сборку. Завела на него [Issue](https://github.com/Berengalina/moneytransfer/issues/1)
+
+В качестве тестовых данных я создала в классе DataHelper массив с номерами банковских карт, где указала две реальные карты и одну фиктивную. В тестах карты вызываются по индексу массива.
+Сумму пополнения я также создала в классе DataHelper и присвоила ей конкретное значение, в тестах методы пополнения вызываются без указания параметра (суммы пополнения).
+
+ 
 Сборка в CI подсвечивается зеленым, но в ходе обработки есть ошибка:
 2020-11-25 17:39:37.500 [DefaultDispatcher-worker-5] ERROR Application - 500 Internal Server Error: POST - /api/transfer
 java.util.NoSuchElementException: Collection contains no element matching the predicate
 
-Отчет выглядит так
+Отчет выглядит так, что тесты выполнились успешно
 
+``` <?xml version="1.0" encoding="UTF-8"?>
 <testsuite name="ru.netology.web.test.MoneyTransferTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2020-11-25T17:34:43" hostname="ANNA-PC" time="16.955">
   <properties/>
   <testcase name="shouldTransferMoneyBetweenOwnCardsV1()" classname="ru.netology.web.test.MoneyTransferTest" time="10.239"/>
@@ -23,4 +33,6 @@ ChromeDriver was started successfully.
 нояб. 25, 2020 8:34:50 PM org.openqa.selenium.remote.ProtocolHandshake createSession
 INFO: Detected dialect: W3C
 ]]></system-err>
-</testsuite>
+</testsuite> 
+```
+  
