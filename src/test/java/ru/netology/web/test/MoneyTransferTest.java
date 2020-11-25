@@ -83,7 +83,7 @@ class MoneyTransferTest {
     }
 
     @Test
-    void shouldTransferMoneyBetweenOwnCardsV4() {  //проверяем невозможность пополнения первой карты на несуществующую карту
+    void shouldTransferMoneyBetweenOwnCardsV4() {  //проверяем невозможность пополнения первой карты с несуществующей карты
         val loginPage = new LoginPageV2();
         val authInfo = DataHelper.getAuthInfo();
         val verificationPage = loginPage.validLogin(authInfo);
