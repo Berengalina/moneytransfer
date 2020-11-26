@@ -27,14 +27,6 @@ public class DataHelper {
         return new VerificationCode("12345");
     }
 
-    public static String getCardInfo(int item) {
-        String[] cards = {"5559 0000 0000 0001", "5559 0000 0000 0002", "1111 1111 1111"};
-        if (item >= 0 && item <= 2) {
-            return cards[item];
-        }
-        return null;
-    }
-
     @Value
     public static class Card {
         private String card;
