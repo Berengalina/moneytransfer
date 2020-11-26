@@ -36,12 +36,20 @@ public class DataHelper {
     }
 
     @Value
-    public static class Payment {
-        private String payment;
+    public static class Card {
+        private String card;
     }
 
-    public static String getPayment() {
-        return ("4");
+    public static String getFirstCard() {
+        return "5559 0000 0000 0001";
+    }
+
+    public static String getSecondCard() {
+        return "5559 0000 0000 0002";
+    }
+
+    public static String getInvalidCard() {
+        return "1111 1111 1111 1111";
     }
 
 }
