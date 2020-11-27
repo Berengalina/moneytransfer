@@ -29,8 +29,7 @@ class MoneyTransferTest {
         val initialBalanceToCard = dashboardPage.getSecondCardBalance(); //получили баланс карты, с которой будем пополнять
         val transferPage = dashboardPage.validChoosePay1(); //выбрали карту c которой будет оплата
         transferPage.checkHeadingPaymentCards(); // проверили видимость заголовка "Пополнение карты"
-        transferPage.validPayAmount("5");//ввели сумму перевода
-        val dashboardPage1 = transferPage.validPaySecondCard(); //ввели карту для перевода и вернулись на страницу с балансами и картами
+        val dashboardPage1 = transferPage.validPaySecondCard("5"); //ввели сумму перевода и карту для перевода и вернулись на страницу с балансами и картами
         val actual = dashboardPage1.getFirstCardBalance(); //получили новый баланс первой карты
         val expected = initialBalanceFromCard + 5; //посчитали каким должен быть баланс первой карты
         val actual2 = dashboardPage1.getSecondCardBalance(); //получили новый баланс второй карты
@@ -52,8 +51,7 @@ class MoneyTransferTest {
         val initialBalanceToCard = dashboardPage.getFirstCardBalance();
         val transferPage = dashboardPage.validChoosePay2();
         transferPage.checkHeadingPaymentCards();
-        transferPage.validPayAmount("999");
-        val dashboardPage1 = transferPage.validPayFirstCard();
+        val dashboardPage1 = transferPage.validPayFirstCard("999");
         val actual1 = dashboardPage1.getSecondCardBalance();
         val expected1 = initialBalanceFromCard + 999;
         val actual2 = dashboardPage1.getFirstCardBalance(); //получили новый баланс второй карты
@@ -89,8 +87,7 @@ class MoneyTransferTest {
         //val initialBalanceFromCard = dashboardPage.getFirstCardBalance();
         val transferPage = dashboardPage.validChoosePay1(); //выбрали карту c которой будет оплата
         transferPage.checkHeadingPaymentCards();
-        transferPage.validPayAmount("1000");
-        transferPage.invalidPayCard(); //ввели данные несуществующей карты, ожидаем предупреждение на странице
+        transferPage.invalidPayCard("1000"); //ввели сумму и данные несуществующей карты, ожидаем предупреждение на странице
     }
 
 

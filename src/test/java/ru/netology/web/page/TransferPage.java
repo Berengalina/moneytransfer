@@ -20,42 +20,38 @@ public class TransferPage {
         heading2.shouldBe(Condition.visible);
     }
 
-    public void validPayAmount(String sum) {   //метод для ввода суммы пополнения
+    public DashboardPage validPayFirstCard(String sum) {   // ввести сумму и карту с которой осуществляется оплата и нажать "пополнить"
         amount.setValue(sum);
-    }
-
-    public DashboardPage validPayFirstCard() {   // ввести карту с которой осуществляется оплата и нажать "пополнить"
         fromCard.setValue(DataHelper.getFirstCard());
         buttonPay.click();
         return new DashboardPage();
     }
 
-    public DashboardPage validPaySecondCard() {   // ввести карту с которой осуществляется оплата и нажать "пополнить"
+    public DashboardPage validPaySecondCard(String sum) {   // ввести сумму и карту с которой осуществляется оплата и нажать "пополнить"
+        amount.setValue(sum);
         fromCard.setValue(DataHelper.getSecondCard());
         buttonPay.click();
         return new DashboardPage();
     }
 
-    public TransferPage invalidPayCard() {   // метод для ввода несуществующей карты
+    public void invalidPayCard(String sum) {   // метод для ввода несуществующей карты
+        amount.setValue(sum);
         fromCard.setValue(DataHelper.getInvalidCard());
         buttonPay.click();
         $("[data-test-id=error-notification] .notification__content").shouldHave(text("Произошла ошибка"));
-        return new TransferPage();
     }
 
-    public TransferPage validPayExtendAmount(int payment) {   //метод для пополнения на сумму большую, чем есть на карте
+    public void validPayExtendAmount(int payment) {   //метод для пополнения на сумму большую, чем есть на карте
         amount.setValue(String.valueOf(payment));
         fromCard.setValue(DataHelper.getSecondCard());
         buttonPay.click();
         $("[data-test-id=error-notification] .notification__content").shouldHave(text("Вы не можете перевести средств больше, чем есть на карте"));
-        return new TransferPage();
     }
 
-    public TransferPage validPaySameCard(String sum) {   //  метод для проверки перевода на ну же карту
+    public void validPaySameCard(String sum) {   //  метод для проверки перевода на ну же карту
         amount.setValue(sum);
         fromCard.setValue(DataHelper.getFirstCard());
         buttonPay.click();
         $("[data-test-id=error-notification] .notification__content").shouldHave(text("Невозможно осуществить перевод на ту же самую карту"));
-        return new TransferPage();
     }
 }
