@@ -41,10 +41,8 @@ public class TransferPage {
         $("[data-test-id=error-notification] .notification__content").shouldHave(text("Невозможно осуществить перевод на ту же самую карту"));
     }
 
-
     public void setExtendAmount(int extAmount) {   // метод для ввода суммы, превышающей баланс карты-донора
         amount.setValue(String.valueOf(extAmount));
-
     }
 
     public void validPayExtendAmount(String card) {   //метод для получения ошибки при переводе суммы большей, чем есть на карте-доноре
@@ -52,6 +50,5 @@ public class TransferPage {
         buttonPay.click();
         $("[data-test-id=error-notification] .notification__content").shouldHave(text("Вы не можете перевести средств больше, чем есть на карте"));
     }
-
 
 }
