@@ -27,21 +27,4 @@ public class DataHelper {
         return new VerificationCode("12345");
     }
 
-    @Value
-    public static class Card {
-        private String card;
-    }
-
-    public static String getFirstCard() {
-        return "5559 0000 0000 0001";
-    }
-
-    public static String getSecondCard() {
-        return "5559 0000 0000 0002";
-    }
-
-    public static String getInvalidCard() {
-        return "1111 1111 1111 1111";
-    }
-
 }
