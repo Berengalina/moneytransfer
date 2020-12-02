@@ -18,13 +18,8 @@ public class TransferPage {
         heading2.shouldBe(Condition.visible);
     }
 
-    public int setAmount() { //метод для установки суммы платежа
-        int payment = 5;
-        return payment;
-    }
-
-    public void setPayCardNumber(String card) {   // метод для ввода суммы, карты-донора и нажатия "пополнить"
-        amount.setValue(String.valueOf(setAmount()));
+    public void setPayCardNumber(String card, int payment) {   // метод для ввода суммы, карты-донора и нажатия "пополнить"
+        amount.setValue(String.valueOf(payment));
         fromCard.setValue(card);
         buttonPay.click();
     }
@@ -41,13 +36,7 @@ public class TransferPage {
         $("[data-test-id=error-notification] .notification__content").shouldHave(text("Невозможно осуществить перевод на ту же самую карту"));
     }
 
-    public void setExtendAmount(int extAmount) {   // метод для ввода суммы, превышающей баланс карты-донора
-        amount.setValue(String.valueOf(extAmount));
-    }
-
-    public void validPayExtendAmount(String card) {   //метод для получения ошибки при переводе суммы большей, чем есть на карте-доноре
-        fromCard.setValue(card);
-        buttonPay.click();
+    public void validPayExtendAmount() {   //метод для получения ошибки при переводе суммы большей, чем есть на карте-доноре
         $("[data-test-id=error-notification] .notification__content").shouldHave(text("Вы не можете перевести средств больше, чем есть на карте"));
     }
 

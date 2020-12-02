@@ -18,7 +18,7 @@ class MoneyTransferTest {
     }
 
     @Test
-    void shouldTransferMoneyBetweenOwnCardsV1() {  //проверяем пополнение с первой карты на вторую
+    void shouldTransferMoneyFromSecondToFirstCard() {
         val loginPage = new LoginPageV2();
         val authInfo = DataHelper.getAuthInfo();
         val verificationPage = loginPage.validLogin(authInfo);
@@ -29,19 +29,20 @@ class MoneyTransferTest {
         val initialBalanceFromCard = dashboardPage.getSecondCardBalance(); //получили баланс карты, с которой будем пополнять
         val transferPage = dashboardPage.validChoosePay1(); //выбрали карту c которой будет оплата
         transferPage.checkHeadingPaymentCards(); // проверили видимость заголовка "Пополнение карты"
-        transferPage.setPayCardNumber("5559 0000 0000 0002"); //ввели сумму перевода и карту для перевода
+        val amount = 1234;//задали сумму перевода
+        transferPage.setPayCardNumber(DataHelper.getSecondCard(), amount); //ввели сумму перевода и карту для перевода
         val dashboardPage1 = transferPage.validPayCard(); //вернулись на страницу с балансами и картами после успешного пополнения
         val actual = dashboardPage1.getFirstCardBalance(); //получили новый баланс первой карты
-        val expected = initialBalanceToCard + transferPage.setAmount(); //посчитали каким должен быть баланс первой карты
+        val expected = initialBalanceToCard + amount; //посчитали каким должен быть баланс первой карты
         val actual2 = dashboardPage1.getSecondCardBalance(); //получили новый баланс второй карты
-        val expected2 = initialBalanceFromCard - transferPage.setAmount(); //посчитали каким должен быть баланс второй карты
+        val expected2 = initialBalanceFromCard - amount; //посчитали каким должен быть баланс второй карты
         assertEquals(expected, actual); //сравнили балансы первой карты
         assertEquals(expected2, actual2); //сравнили балансы второй карты
     }
 
 
     @Test
-    void shouldTransferMoneyBetweenOwnCardsV2() {  //проверяем пополнение со второй карты на первую
+    void shouldTransferMoneyFromFirstToSecondCard() {
         val loginPage = new LoginPageV2();
         val authInfo = DataHelper.getAuthInfo();
         val verificationPage = loginPage.validLogin(authInfo);
@@ -52,18 +53,19 @@ class MoneyTransferTest {
         val initialBalanceFromCard = dashboardPage.getFirstCardBalance();
         val transferPage = dashboardPage.validChoosePay2();
         transferPage.checkHeadingPaymentCards();
-        transferPage.setPayCardNumber("5559 0000 0000 0001");
+        val amount = 999;
+        transferPage.setPayCardNumber(DataHelper.getFirstCard(), amount);
         val dashboardPage1 = transferPage.validPayCard();
         val actual1 = dashboardPage1.getSecondCardBalance();
-        val expected1 = initialBalanceToCard + transferPage.setAmount();
+        val expected1 = initialBalanceToCard + amount;
         val actual2 = dashboardPage1.getFirstCardBalance();
-        val expected2 = initialBalanceFromCard - transferPage.setAmount();
+        val expected2 = initialBalanceFromCard - amount;
         assertEquals(expected1, actual1);
         assertEquals(expected2, actual2);
     }
 
     @Test
-    void shouldTransferMoneyBetweenOwnCardsV3() {  //проверяем невозможность пополнения первой карты на саму себя
+    void shouldNotTransferMoneySameCard() {  //проверяем невозможность пополнения первой карты на саму себя
         val loginPage = new LoginPageV2();
         val authInfo = DataHelper.getAuthInfo();
         val verificationPage = loginPage.validLogin(authInfo);
@@ -72,13 +74,14 @@ class MoneyTransferTest {
         dashboardPage.checkHeadingYourCards();
         val transferPage = dashboardPage.validChoosePay1(); //выбрали карту c которой будет оплата
         transferPage.checkHeadingPaymentCards(); // проверили видимость заголовка "Пополнение карты"
-        transferPage.setPayCardNumber("5559 0000 0000 0001"); //ввели сумму перевода и ту же первую карту в качестве карты-донора
+        val amount = 1000;
+        transferPage.setPayCardNumber(DataHelper.getFirstCard(), amount); //ввели сумму перевода и ту же первую карту в качестве карты-донора
         transferPage.validPaySameCard(); //ожидаем предупреждение на странице
     }
 
 
     @Test
-    void shouldTransferMoneyBetweenOwnCardsV4() {  //проверяем невозможность пополнения первой карты с несуществующей карты
+    void shouldNotTransferMoneyInvalidCard() {  //проверяем невозможность пополнения первой карты с несуществующей карты
         val loginPage = new LoginPageV2();
         val authInfo = DataHelper.getAuthInfo();
         val verificationPage = loginPage.validLogin(authInfo);
@@ -87,13 +90,14 @@ class MoneyTransferTest {
         dashboardPage.checkHeadingYourCards();
         val transferPage = dashboardPage.validChoosePay1(); //выбрали карту c которой будет оплата
         transferPage.checkHeadingPaymentCards(); // проверили видимость заголовка "Пополнение карты"
-        transferPage.setPayCardNumber("1111 1111 1111 1111"); //ввели сумму и данные несуществующей карты
+        val amount = 1000;
+        transferPage.setPayCardNumber(DataHelper.getInvalidCard(), amount); //ввели сумму и данные несуществующей карты
         transferPage.invalidPayCard(); //ожидаем предупреждение на странице
     }
 
 
     @Test
-    void shouldTransferMoneyBetweenOwnCardsV5() {  //проверяем невозможность пополнения на сумму, большую чем на карте-доноре
+    void shouldNotTransferMoneyExtendLimit() {  //проверяем невозможность пополнения на сумму, большую чем на карте-доноре
         val loginPage = new LoginPageV2();
         val authInfo = DataHelper.getAuthInfo();
         val verificationPage = loginPage.validLogin(authInfo);
@@ -103,8 +107,9 @@ class MoneyTransferTest {
         val initialBalanceFromCard = dashboardPage.getSecondCardBalance(); //получили баланс карты, с которой будем пополнять
         val transferPage = dashboardPage.validChoosePay1(); //выбрали карту c которой будет оплата
         transferPage.checkHeadingPaymentCards(); // проверили видимость заголовка "Пополнение карты"
-        transferPage.setExtendAmount(initialBalanceFromCard + transferPage.setAmount()); //вводим сумму большую, чем есть на балансе второй карты
-        transferPage.validPayExtendAmount("5559 0000 0000 0002"); //ожидаем предупреждение на странице
+        val amount = 1 + initialBalanceFromCard; //задаем сумму пополнения большую, чем баланс карты-донора
+        transferPage.setPayCardNumber(DataHelper.getSecondCard(), amount); //вводим сумму и номер карты-донора
+        transferPage.validPayExtendAmount(); //ожидаем предупреждение на странице
     }
 
 }
